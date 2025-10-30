@@ -71,21 +71,26 @@
  A program and circuit are required for a specified project that involves an Arduino Uno board.  These projects can range from an interactive game to a programmable LED screen. The options are however, unlimited.
 
 \section{Problem analysis}
-The project that was chosen in our instance, was one that was thought of by ourselves. The main goal is to create a functioning system that can read an RFID tag or card and compare it's UID to a simple database running on a webserver. To communicate with this database, the circuit obviously needs an internet connection in some way. Lastly, all the hardware and the database need some solid code to make it work as intended.
+The project that was chosen in our instance, was one that was thought of by ourselves. The main goal is to create a functioning system that can read an RFID tag or card and compare it's UID to a simple database running on a webserver. To communicate with this database the circuit obviously needs an internet connection in some way. And most important of all, the hardware and the database need some solid code to make it work as intended.
 
 \section{Design}
-The design consists primarily of a circuit with an Arduino Uno, a 20x4 character LCD screen, an RFID reader, and additionally an ESP32. To improve the interaction with the system, a buzzer and two LEDs are also included. The main code is run on the Arduino itself, while the Arduino and ESP32 are interconnected to assure a WiFi connection. Lastly, to avoid any soldering, a breadboard and a large amount of jumper wires are used. 
-A program for the Arduino and the ESP32 can both be written using the Arduino IDE. The syntax of the code written in the Arduino IDE is almost identical to that of C++. For the database (...) can be used (...). 
+The design consists primarily of a circuit with an Arduino Uno, a 20x4 character LCD screen, an RFID reader, and additionally an ESP32. To improve the interaction with the system, a buzzer and two LEDs are also included. The main code is run on the Arduino itself, while the Arduino and ESP32 are interconnected to assure a WiFi connection. Lastly, to avoid any soldering, a breadboard and a large amount of coloured jumper wires are used.
+
+A program for the Arduino and the ESP32 can both be written using the Arduino IDE. The syntax of the code written in the Arduino IDE is almost identical to that of C++, but makes it very simple to upload the code directly to the Arduino or ESP32 via USB connection. For the database (...) can be used (...). 
 
 \newpage
 \section{Program code}
 \lstset{style=code}
 
-%Code for Arduino
+%Code for Arduino UNO
 \lstinputlisting[language=C++, title=intro-to-cs-project.ino, captionpos=t]{../Code/arduino/intro-to-cs-project.ino}
 \newpage
 %Code for ESP32
 \lstinputlisting[language=C++, title=esp32.ino, captionpos=t]{../Code/esp32/esp32.ino}
+%Code for the web server (JavaScript)
+%\lstinputlisting[language=JavaScript, title=webserver (JavaScript), captionpos=t]{../Code/webserver/*.js}
+%Code for the web server (HTML)
+%\lstinputlisting[language=HTML, title=webserver (HTML), captionpos=t]{../Code/webserver/*.html}
 
 \section{Test results}
 
