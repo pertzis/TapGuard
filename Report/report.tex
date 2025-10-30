@@ -1,0 +1,95 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{a4wide}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{Gray}{gray}{0.98}
+
+\definecolor{mkpForeground}{HTML}{403E41} 
+\definecolor{mkpKeyword}{HTML}{A37ACC}    
+\definecolor{mkpString}{HTML}{4876D6}   
+\definecolor{mkpComment}{HTML}{939084}  
+\definecolor{mkpNumber}{HTML}{F59762}    
+\definecolor{mkpType}{HTML}{36A3D9}       
+\definecolor{mkpFunction}{HTML}{FC618D}   
+\definecolor{mkpLineNumber}{HTML}{C8C3B9} 
+\definecolor{mkpFrame}{HTML}{E8E2C9} 
+
+\lstdefinestyle{code}{
+    backgroundcolor=\color{Gray},
+    basicstyle=\ttfamily\footnotesize\color{mkpForeground},
+    keywordstyle=\color{mkpKeyword}\bfseries,
+    commentstyle=\color{mkpComment}\itshape,
+    stringstyle=\color{mkpString},
+    numberstyle=\tiny\color{mkpLineNumber},
+    identifierstyle=\color{mkpForeground},
+    numbers=left,
+    numbersep=6pt,
+    frame=tb,
+    framextopmargin=.75mm,          % Space margin top
+    framexbottommargin=.75mm,       % Space margin bottom
+    framexleftmargin=2mm,           % Space margin left
+    framexrightmargin=2mm,          % Space margin right
+    rulecolor=\color{mkpFrame},
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    showspaces=false,
+    showtabs=false,
+    columns = fullflexible,	
+    tabsize=5,
+    captionpos=b,
+    keepspaces=true
+}
+
+% This is the list style for displaying input/output. It is different from the style above, since you don't need C keywords to be highlighted in these listings. Line numbers are also emitted in this style.
+\lstdefinestyle{stdio}{
+    basicstyle = \small\ttfamily,	% Font of the text
+    frame = tb,				        % Style of the surrounding frame
+    framextopmargin=.75mm,         % Space margin top
+    framexbottommargin=.75mm,      % Space margin bottom
+    framexleftmargin=2mm,          % Space margin left
+    framexrightmargin=2mm,         % Space margin right
+    tabsize = 3,					% Size of tab character
+    breaklines = true,             % Wrap lines of text that are too long
+    columns = flexible,			
+    showstringspaces = false,
+    backgroundcolor = \color{Gray}
+}
+
+\title{Arduino Programming}
+\author{P. Giamalakis \& S. Kleve\\
+        p.giamalakis@student.rug.nl \& s.kleve@student.rug.nl}
+%------------------------------------------------------------%
+% This is where your document starts:
+
+\begin{document}
+\maketitle
+
+\section{Problem description}
+ A program and circuit are required for a specified project that involves an Arduino Uno board.  These projects can range from an interactive game to a programmable LED screen. The options are however, unlimited.
+
+\section{Problem analysis}
+The project that was chosen in our instance, was one that was thought of by ourselves. The main goal is to create a functioning system that can read an RFID tag or card and compare it's UID to a simple database running on a webserver. To communicate with this database, the circuit obviously needs an internet connection in some way.
+
+\section{Design}
+The design consists primarily of a circuit with an Arduino Uno, a 20x4 character LCD screen, an RFID reader, and additionally an ESP32. To improve the interaction with the system, a buzzer and two LEDs are also included. The main code is run on the Arduino itself, while the Arduino and ESP32 are interconnected to assure a WiFi connection.
+
+\newpage
+\section{Program code}
+\lstset{style=code}
+
+%Code for Arduino
+\lstinputlisting[language=C++, title=intro-to-cs-project.ino, captionpos=t]{intro-to-cs-project.ino}
+\newpage
+%Code for ESP32
+\lstinputlisting[language=C++, title=esp32.ino, captionpos=t]{esp32.ino}
+
+\section{Test results}
+
+
+\section{Evaluation}
+
+
+\end{document}

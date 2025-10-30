@@ -1,6 +1,6 @@
 
 #include <LiquidCrystal.h>  // Include LCD Library
-#include<SPI.h>             // Include SPI.h for SPI Communication with the Arduino
+#include <SPI.h>             // Include SPI.h for SPI Communication with the Arduino
 #include <MFRC522.h>        // Include RFID Scanner Library
 
 // LCD Pins
@@ -19,7 +19,7 @@ MFRC522 rc(SS, RST);
 // LED Pins
 uint8_t RED_LED = A0;
 uint8_t GREEN_LED = A1;
-
+// Buzzer
 uint8_t BUZZER = A5;
 
 // Authorized cards:
@@ -50,7 +50,7 @@ void setup() {
   lcd.print("card.");
   rc.PCD_Init(); //initialize the receiver  
   rc.PCD_DumpVersionToSerial(); //show details of card reader module
-
+  
   pinMode(GREEN_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
   pinMode(BUZZER, OUTPUT);
@@ -77,8 +77,8 @@ void loop() {
   for(int i = 0; i < 4; i++){
     scannedCard[i] = rc.uid.uidByte[i]; // Storing the UID of the scanned tag in scannedCard.
     Serial.print(rc.uid.uidByte[i], HEX);
+    Serial.print('\n');
   }
-  Serial.print('\n');
 
   int successCard = -1;
   for (int i = 0; i < 2; i++) {
