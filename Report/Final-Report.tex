@@ -3,6 +3,7 @@
 \usepackage[english]{babel}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{hyperref}
 
 \definecolor{Gray}{gray}{0.98}
 
@@ -43,6 +44,15 @@
     keepspaces=true
 }
 
+% JavaScript
+\lstdefinelanguage{JavaScript}{
+  morekeywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morestring=[b]",
+  morestring=[b]'
+}
+
 % This is the list style for displaying input/output. It is different from the style above, since you don't need C keywords to be highlighted in these listings. Line numbers are also emitted in this style.
 \lstdefinestyle{stdio}{
     basicstyle = \small\ttfamily,	% Font of the text
@@ -76,22 +86,28 @@ The project that was chosen in our instance, was one that was thought of by ours
 \section{Design}
 The design consists primarily of a circuit with an Arduino Uno, a 20x4 character LCD screen, an RFID reader, and additionally an ESP32. To improve the interaction with the system, a buzzer and two LEDs are also included. The original plan was to run the main code on the Arduino itself, while the Arduino and ESP32 are interconnected to assure a WiFi connection. However, this is unnecessary and can cause annoying issues with the communication between the Arduino and ESP32. Therefore, all code is run directly on the ESP32. The Arduino however, is very useful in early stage testing of the hardware circuit. Lastly, to avoid any soldering, a breadboard and a large amount of coloured jumper wires are used.
 
-A program for the Arduino and the ESP32 can both be written using the Arduino IDE. The syntax of the code written in the Arduino IDE is almost identical to that of C++, but makes it very simple to upload the code directly to the Arduino or ESP32 via USB connection. For the database (...) can be used (...). 
+A program for the Arduino and the ESP32 can both be written using the Arduino IDE. The syntax of the code written in the Arduino IDE is almost identical to that of C++, but makes it very simple to upload the code directly to the Arduino or ESP32 via USB connection. To get the webserver working steadily as quickly as possible these pages are written in TypeScript and EJS. Finally, UIDs are stored in a SQL database.  
 
 \newpage
 \section{Program code}
 \lstset{style=code}
 
-%Code for Arduino UNO
-\lstinputlisting[language=C++, title=intro-to-cs-project.ino, captionpos=t]{../Code/arduino/intro-to-cs-project.ino}
-\newpage
 %Code for ESP32
-\lstinputlisting[language=C++, title=esp32.ino, captionpos=t]{../Code/esp32/esp32.ino}
+\lstinputlisting[language=C++, title=esp32-solo.ino, captionpos=t]{../Code/esp32-solo/esp32-solo.ino}
+\newpage
 %Code for the web server (TypeScript)
-\lstinputlisting[language=JavaScript, title=webserver (JavaScript), captionpos=t]{../Code/webserver/*.ts}
-%Code for the web server (HTML)
-%\lstinputlisting[language=HTML, title=webserver (HTML), captionpos=t]{../Code/webserver/*.html}
-
+\lstinputlisting[language=JavaScript, title=cards.ts, captionpos=t]{../Code/web-server/src/db/cards.ts}
+\lstinputlisting[language=JavaScript, title=apiRouter.ts, captionpos=t]{../Code/web-server/src/routers/apiRouter.ts}
+\lstinputlisting[language=JavaScript, title=pageRouter.ts, captionpos=t]{../Code/web-server/src/routers/pageRouter.ts}
+\lstinputlisting[language=JavaScript, title=Card.ts, captionpos=t]{../Code/web-server/src/types/Card.ts}
+\lstinputlisting[language=JavaScript, title=db.ts, captionpos=t]{../Code/web-server/src/db.ts}
+\lstinputlisting[language=JavaScript, title=index.ts, captionpos=t]{../Code/web-server/src/index.ts}
+\par
+%Code for the web server (EJS)
+For all EJS files, refer to: \par
+{\centering \textbf{/Code/web-server/src/views} \par}
+or the
+{\centering \href{https://github.com/stl12033/Arduino-Programming/tree/main/Code/web-server/src/views}{GitHub page}.\par}
 \section{Test results}
 
 
