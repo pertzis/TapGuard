@@ -26,6 +26,7 @@ The ESP32 reads an RFID card, sends their UIDs over WiFi to the backend for veri
 **Buzzer** | Audio feedback
 
 **LEDs (Red & Green)** | Access granted = Green, denied = Red
+
 ---
 
 ## Code
