@@ -17,11 +17,15 @@ The ESP32 reads an RFID card, sends their UIDs over WiFi to the backend for veri
 
 ## Hardware Components
 
-**ESP32** | Main controller |
-**RFID Reader (RC522)** | Reads RFID tag UIDs |
-**LCD Display (20x4)** | Displays messages|
-**Buzzer** | Audio feedback |
-**LEDs (Red & Green)** | Access granted = Green, access not granted = Red |
+**ESP32** | Main controller
+
+**RFID Reader (RC522)** | Reads RFID tag UIDs
+
+**LCD Display (20x4)** | Displays messages
+
+**Buzzer** | Audio feedback
+
+**LEDs (Red & Green)** | Access granted = Green, denied = Red
 ---
 
 ## Code
