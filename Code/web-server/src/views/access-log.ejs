@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>TapGuard</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <style>
+            * {
+                font-family: 'Inter', sans-serif;
+            }
+            h1 {
+                font-family: 'JetBrains Mono', monospace;
+            }
+        </style>
+    </head>
+    <body class="flex h-screen w-screen">
+        <%- include('partials/sidebar.partial.ejs') %>
+        
+        <article class="m-2 h-full w-full">
+            <h2 class="text-3xl font-bold mt-5 mb-2">Access Log</h2>
+            <div class="rounded border border-slate-300 shadow-lg">
+                
+                <table class="w-full text-left">
+                    <thead class="border-b border-b-slate-300">
+                        <tr>
+                            <th class="py-2 px-2" scope="col">Name</th>
+                            <th class="py-2 px-2" scope="col">Card UID</th>
+                            <th class="py-2 px-2" scope="col">Time In</th>
+                            <th class="py-2 px-2" scope="col">Time Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-b-slate-300">
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </article>
+    </body>
+</html>
