@@ -2,6 +2,7 @@ import express from 'express'
 import type { NextFunction, Request } from 'express'
 import { createCard, getCard, getCards, updateCard } from '../db/cards';
 import { CardDto } from '../types/Card';
+import { getAccessLog } from '../db/accessLog';
 
 const pageRouter = express.Router()
 
@@ -85,8 +86,24 @@ pageRouter.post('/card-settings/:uid', async (req, res) => {
 })
 
 pageRouter.get('/access-log', async (req, res) => {
+
+    const formatter = new Intl.DateTimeFormat("en-US", 
+        { 
+            dateStyle: "short", 
+            timeStyle: "medium",
+            hour12: false, 
+        }
+    )
+
+    let accessLog =  await getAccessLog()
+    const formattedAccessLog = accessLog.map(entry => ({
+        ...entry,
+        tin: formatter.format(entry.tin),
+        tout: entry.tout === null ? "-" : formatter.format(entry.tout),
+    }))
     res.render("access-log.ejs", {
         active: req.path.split('/')[1],
+        accessLog: formattedAccessLog
     })
 })
 
