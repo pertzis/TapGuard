@@ -4,6 +4,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{outlines}
 
 \definecolor{Gray}{gray}{0.98}
 
@@ -78,41 +79,123 @@
 \maketitle
 
 \section{Problem description}
- A program and circuit are required for a specified project that involves an Arduino Uno board or a similar microcontroller.  These projects can range from an interactive game to a programmable LED screen. The options are however, unlimited.
+
+ Access Control is a fundamental component for both physical security and cybersecurity. It is particularly interesting how such system operates in order to validate and authorize specific users to certain physical spaces. This is why our team wanted to explore how such system works, and what it would take to recreate one in a smaller scale, using conventional microelectronics.
 
 \section{Problem analysis}
-The project that was chosen in our instance, was one that was thought of by ourselves. The main goal is to create a functioning system that can read an RFID tag or card and compare it's UID to a database running on a webserver. To communicate with this database the circuit obviously needs an internet connection in some way. And most important of all, the hardware and the database need some solid code to make it work as intended.
-
+The project that was chosen in our instance, was one that was thought of by ourselves. The main goal is to create a feature rich, functioning access control  and logging system. A user is assumed to be authorized, through the physical ownership of an RFID-based device, such as a tag or card. Each RFID device has a random identifier (UID) which most commonly can be 4, 7 or 10 bytes long. Our RFID equipment came with 4-byte long UIDs, and consequently these 4 bytes will be used to check if a user is authorized access. \\
+The UIDs are cross-checked by the microcontroller with a MySQL database. The microcontroller interfaces with the database through a REST API, built using the JavaScript Express library. However, TypeScript was used rather than JavaScript, because guessing variable types stopped being fun.
 \section{Design}
-The design consists primarily of a circuit with an Arduino Uno, a 20x4 character LCD screen, an RFID reader, and additionally an ESP32. To improve the interaction with the system, a buzzer and two LEDs are also included. The original plan was to run the main code on the Arduino itself, while the Arduino and ESP32 are interconnected to assure a WiFi connection. However, because there was the option to replace the Arduino with an ESP32 completely, this was chosen to prevent any issues in communication between the two. The Arduino however, is very useful in early stage testing of the hardware circuit. Lastly, to avoid any soldering, a breadboard and a large amount of coloured jumper wires are used.
+The design consists primarily of a circuit with an ESP32 microcontroller, a $20 \times 4$ character LCD screen and an RFID reader. To improve user experience, a buzzer and two LEDs are also included. The original plan was to run the main code on the Arduino itself, while the Arduino and ESP32 are interconnected to assure a Wi-Fi connection. However, because there was the option to replace the Arduino with an ESP32 completely, this was chosen to prevent any issues in communication between the two. The Arduino however, was very useful in early stage testing of the hardware circuit. Lastly, to avoid any soldering, a breadboard and a large amount of coloured jumper wires are used.
 
-A program for the Arduino and the ESP32 can both be written using the Arduino IDE. The syntax of the code written in the Arduino IDE is almost identical to that of C++, but makes it very simple to upload the code directly to the Arduino or ESP32 via USB connection. To get the webserver working steadily and as quickly as possible these pages are written in TypeScript and EJS. Finally, UIDs are stored in an SQL database.
-
-Now as for the code itself (...)
-
+A program for the Arduino and the ESP32 can both be written using the Arduino IDE. The syntax of the code written in the Arduino IDE is almost identical to that of C++, but makes it very simple to upload the code directly to the Arduino or ESP32 via USB connection. \\
+The Express Library was chosen as a reliable option for creating the web server, because it offers both routing for server-side rendering through the EJS templating language, but also routing for the REST API.
+To get the web server working steadily and as quickly as possible these pages are written in TypeScript and EJS. Finally, UIDs are stored in an SQL database.
 
 \newpage
-\section{Program code}
+
+\section{Project Strucutre}
+The structure of this project's codebase is as follows:
+
+\subsection{ESP32}
+To our understanding, through the Arduino IDE, only one file can be compiled and uploaded to the ESP32. Therefore, all the code for the ESP32 is stored in \textbf{esp32-solo.ino}:
+\begin{outline}
+    \1 esp32-solo
+        \2 esp32-solo.ino
+\end{outline}
+
+\subsection{Web server}
+When creating the web server, standard software engineering practices were considered. One important practice that was considered when developing the web server was modularity, and more specifically, seperation of concerns. Each concern involving the web server was separated into its own file, and organized in a way to make development and expandability easier, even for new developers joining the project. This project roughly imitates the Model View Controller (MVC) architecture, as it can be seen with its structure below:
+\begin{outline}
+    \1 web-server
+        \2 src
+            \3 \textbf{db:} All the logic for performing CRUD operations for each entity resides here.
+                \4 accessLog.ts
+                \4 cards.ts
+                \4 state.ts
+            \3 \textbf{routers:} Defines and handles the endpoints for accessing pages and/or API routes.
+                \4 apiRouter.ts
+                \4 pageRouter.ts
+            \3 \textbf{types:} Custom TypeScript interfaces for entities.
+                \4 Card.ts
+                \4 LogEntry.ts
+                \4 State.ts
+            \3 \textbf{views:} All EJS templates used for SSR.
+                \4 partials / sidebar.partial.ejs
+                \4 access-log.ejs
+                \4 card-settings.ejs
+                \4 index.ejs
+                \4 new-card.ejs
+        \2 package.json
+        \2 tsconfig.json
+\end{outline}
+
+\newpage
+
+\section{Code Listing}
 \lstset{style=code}
 
+\subsection{ESP32}
+
+In this section, the most notable code examples will be covered. The file displayed below is the C++ code that is used to operate the system on the ESP32. Four libraries are used, each of which allows the microcontroller to communicate with its respective component. \\
+It is noteworthy to mention that reusable code has been separated into functions, making the overall codebase cleaner and more readable. Comments have also been added for the readability of the code.
+
 %Code for ESP32
-\lstinputlisting[language=C++, title=esp32.ino, captionpos=t]{../Code/esp32/esp32.ino}
 \lstinputlisting[language=C++, title=esp32-solo.ino, captionpos=t]{../Code/esp32-solo/esp32-solo.ino}
+
+\newpage
+
+\subsection{Web Server}
+
+\subsubsection{Entry point (index.ts)}
+
+Below follows the code listing for the entry point of the web server (index.ts). The \textbf{dotenv} package is used in order to load variables from an environment file. This is a good practice, since environment files are usually excluded from Git repositories, and the credentials themselves are not stored into the program itself. \\
+The \textbf{express} package is then used in order to instantiate a web server, as can be seen in line 11. The \textbf{set} function on the Express instance is used to set the server-side templating language to EJS. The path of the views directory is later specified, and the \textbf{urlencoded} middleware is used, in order for Express to parse the URL encoded request when creating a new card through the frontend interface. \\
+Finally, the routes for the root of the web server (\textbf{/}) and the root of the API (\textbf{/api}) are defined, which point to their respective routers.
+\lstinputlisting[language=JavaScript, title=index.ts, captionpos=t]{../Code/web-server/src/index.ts}
+
+\subsubsection{Database connection (db.ts)}
+
+The database connection is handled by this file. One constant variable \textbf{pool} is exported, which can be imported by any file in order to query the database. The \textbf{mysql2/promise} library is used, which allows for asynchonous queries using the \textbf{pool} object. The MySQL credentials have been redacted for obvious reasons.
+
+\lstinputlisting[language=JavaScript, title=db.ts, captionpos=t]{../Code/web-server/src/db.ts}
+
+\subsubsection{CRUD operations example}
+
+Below follows an example of entity model file. Through the functions shown below, CRUD operations can be performed on any of the entities from whichever part of the application. \\
+Every function is asynchronous, therefore a \textbf{Promise} of whatever type of object is being returned needs to be returned from each function. \\
+For all models implementing a create, update or delete method, a \textbf{Promise} of type \textbf{boolean} is returned, which denotes if the creation, update, deletion was successful or not. \\
+For all models implementing a read method, a \textbf{Promise} of type \textbf{T} is returned, where \textbf{T} is the type of the data transfer object (DTO) of the model.
 %Code for the web server (TypeScript)
 \lstinputlisting[language=JavaScript, title=cards.ts, captionpos=t]{../Code/web-server/src/db/cards.ts}
+
+\newpage
+
+\subsubsection{Routers}
+
+Below are the routers used for API routing and page routing. Both routers use an instance of \textbf{express.Router()}, which can be used to specify the type of REST API request and the path of the request. \\
+In Express, path parameters can be specified in the URL using the \textbf{/:parameter} format, where the value \textbf{req.params.parameter} of type \textbf{string} is available, assuming that \textbf{req} is of type \textbf{Express.Request}. As such, the parameter \textbf{uid} is used for reading the UID of the RFID device as a hexadecimal-encoded string.
+
 \lstinputlisting[language=JavaScript, title=apiRouter.ts, captionpos=t]{../Code/web-server/src/routers/apiRouter.ts}
+
+\newpage
+
 \lstinputlisting[language=JavaScript, title=pageRouter.ts, captionpos=t]{../Code/web-server/src/routers/pageRouter.ts}
+
+\newpage
+
+\subsubsection{Interface example}
+
+Below is an example of an file that contains the type definitions for a model. Each model has two types: the model itself as it is represented in the database, and a user (as well as developer) friendly version of the model known as a Data Transfer Object. \\
+For example, the model of a \textbf{Card} entity stores the \textbf{active} attribute as a \textbf{BIT(1)} in the MySQL database, but the developers likely want to interpret this as a boolean. Therefore, a DTO is created, where the \textbf{active} field will be converted to a boolean before the model is returned to the user.
+
 \lstinputlisting[language=JavaScript, title=Card.ts, captionpos=t]{../Code/web-server/src/types/Card.ts}
-\lstinputlisting[language=JavaScript, title=db.ts, captionpos=t]{../Code/web-server/src/db.ts}
-\lstinputlisting[language=JavaScript, title=index.ts, captionpos=t]{../Code/web-server/src/index.ts}
 \par
-%Code for the web server (EJS)
-For all EJS files, refer to: \par
-{\centering \textbf{/Code/web-server/src/views} \par}
-or the
-{\centering \href{https://github.com/stl12033/Arduino-Programming/tree/main/Code/web-server/src/views}{GitHub page}.\par}
+
+% Complete code listing
+For the complete code listing, refer to
+{\centering \href{https://github.com/pertzis/TapGuard}{the GitHub page}.\par}
 
 \section{Evaluation}
-While working on the project we found out that with every step we made we wanted to implement more features. While possibly some prior planning might have been useful, starting work on the project itself is most likely what had caused this inspiration. 
-
+While working on the project we found out that with every step there was a desire to implement more and more features. While possibly some prior planning might have been useful, starting work on the project itself is most likely caused this inspiration. The project has changed from a simple tag scanner on an Arduino UNO to a fully functioning system that has real-life applications. Finally, it is fair to admit that the workload might have been distributed somewhat unfairly because of the difference in experience and having only one circuit to test on. However, it was a new experience with some great results.
 \end{document}
