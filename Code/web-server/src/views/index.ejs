@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>TapGuard</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <style>
+            * {
+                font-family: 'Inter', sans-serif;
+            }
+            h1 {
+                font-family: 'JetBrains Mono', monospace;
+            }
+        </style>
+    </head>
+    <body class="flex h-screen w-screen">
+        <%- include('partials/sidebar.partial.ejs') %>
+        
+        <article class="m-2 h-full w-full">
+            <h2 class="text-3xl font-bold mt-5 mb-2">Cards</h2>
+            <% if (snack) { %>
+                <% if (snack.error) { %>
+                    <div class="flex items-center gap-2 my-4 px-2 py-2 rounded-lg border border-red-300 bg-red-100 ">
+                        <span class="fill-red-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px"><path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm0-160q17 0 28.5-11.5T520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                        </span>
+                        <span>Card could not be updated.</span>
+                    </div>
+                <% } else if (snack.message) { %>
+                    <div class="flex items-center gap-2 my-4 px-2 py-2 rounded-lg border border-green-500 bg-green-100 ">
+                        <span class="fill-green-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z"/></svg>
+                        </span>
+                        <span>Card updated successfully.</span>
+                    </div>
+                <% } %>
+            <% } %>
+            <div class="rounded border border-slate-300 shadow-lg">
+                
+                <table class="w-full text-left">
+                    <thead class="border-b border-b-slate-300">
+                        <tr>
+                            <th class="py-2 px-2" scope="col">Registered Name</th>
+                            <th class="py-2 px-2" scope="col">Card UID</th>
+                            <th class="py-2 px-2 flex justify-center" scope="col">Active</th>
+                            <th class="py-2 px-2" scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% cards.forEach(card => { %>
+                            <tr class="border-b border-b-slate-300">
+                                <td class="py-2 px-2"><%= card.name %></td>
+                                <td style="font-family: JetBrains Mono, monospace;" class="py-2 px-2"><%= card.uid %></td>
+                                <td class="justify-center">
+                                    <% if (card.active) {%>
+                                    <span class="fill-green-500 flex justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z"/></svg>
+                                    </span>
+                                    <% } else { %>
+                                        <span class="fill-red-600 flex justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+                                        </span>
+                                    <% } %>
+
+                                </td>
+                                <td class="flex">
+                                    <a href="/card-settings/<%= card.uid %>" class="flex items-center gap-1 bg-blue-400 text-white p-2 font-bold m-2 rounded-xl text-xs">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#ffffff"><path d="M440-96q-17 0-29-10t-15-26l-15-78q-23-9-44.5-21T296-259l-75 26q-15 5-30.5-.5T167-253l-40-70q-8-14-5-29.5t15-26.5l59-52q-2-12-3-24t-1-25q0-13 1-25t3-24l-59-52q-12-11-15-26.5t5-29.5l40-70q8-14 23.5-19.5t30.5-.5l75 26q19-16 40.5-28t44.5-21l15-78q3-16 15-26t29-10h80q17 0 29 10t15 26l15 78q23 9 44.5 21t40.5 28l75-26q15-5 30.5.5T793-707l40 70q8 14 5 29.5T823-581l-59 52q2 12 3 24t1 25q0 13-1 25t-3 24l59 52q12 11 15 26.5t-5 29.5l-40 70q-8 14-23.5 19.5t-30.5.5l-75-26q-19 16-40.5 28T579-210l-15 78q-3 16-15 26t-29 10h-80Zm22-72h36l19-99q38-7 71-26t57-48l96 32 18-30-76-67q6-17 9.5-35.5T696-480q0-20-3.5-38.5T683-554l76-67-18-30-96 32q-24-29-57-48t-71-26l-19-99h-36l-19 99q-38 7-71 26t-57 48l-96-32-18 30 76 67q-6 17-9.5 35.5T264-480q0 20 3.5 38.5T277-406l-76 67 18 30 96-32q24 29 57 48t71 26l19 99Zm18-168q60 0 102-42t42-102q0-60-42-102t-102-42q-60 0-102 42t-42 102q0 60 42 102t102 42Zm0-144Z"/></svg>
+                                        <span>Card Settings</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            
+        </article>
+    </body>
+</html>
