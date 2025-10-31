@@ -1,4 +1,4 @@
-# Arduino/ESP32 RFID Access Control System
+# TapGuard: ESP32 RFID Access Control System
 
 Built with an **ESP32** microcontroller and a **TypeScript-based web server** using **EJS templates**.  
 The ESP32 reads an RFID card, sends their UIDs over WiFi to the backend for verification, and provides feedback via LEDs, a buzzer, and an LCD display.
@@ -8,9 +8,9 @@ The ESP32 reads an RFID card, sends their UIDs over WiFi to the backend for veri
 ## Features
 
 - Reads and processes RFID tags using the RC522 module  
-- Connects to web server via WiFi  
+- Connects to the web server via WiFi  
 - Displays messages on a 20x4 LCD  
-- Buzzer and LED feedback for access  
+- Buzzer and LED feedback  
 - Database of registered RFID UIDs  
 
 ---

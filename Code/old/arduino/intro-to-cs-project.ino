@@ -1,7 +1,10 @@
+/* This is the original code for the Arduino UNO, which was later replaced by
+ * the ESP32.
+ */
 
-#include <LiquidCrystal.h>  // Include LCD Library
-#include<SPI.h>             // Include SPI.h for SPI Communication with the Arduino
-#include <MFRC522.h>        // Include RFID Scanner Library
+#include <LiquidCrystal.h> // Include LCD Library
+#include <MFRC522.h>       // Include RFID Scanner Library
+#include <SPI.h> // Include SPI.h for SPI Communication with the Arduino
 
 // LCD Pins
 #define RS 7
@@ -26,30 +29,21 @@ uint8_t BUZZER = A5;
 // 70 18 42 1F
 // 3E 71 5E 64
 
-byte cards[][4] = {
-  {0x70, 0x18, 0x42, 0x1F},
-  {0x3E, 0x71, 0x5E, 0x64}
-};
+byte cards[][4] = {{0x70, 0x18, 0x42, 0x1F}, {0x3E, 0x71, 0x5E, 0x64}};
 
-String users[] = {
-  "Petros",
-  "Sam"
-};
+String users[] = {"Petros", "Sam"};
 
 LiquidCrystal lcd(RS, ENABLE, D4, D5, D6, D7);
-
-
-
 
 void setup() {
   SPI.begin();
   Serial.begin(9600);
-  lcd.begin(20, 4);        // Initialize the 16x2 LCD
+  lcd.begin(20, 4);              // Initialize the 16x2 LCD
   lcd.print("Please scan your"); // Print a message to the LCD
   lcd.setCursor(0, 1);
   lcd.print("card.");
-  rc.PCD_Init(); //initialize the receiver  
-  rc.PCD_DumpVersionToSerial(); //show details of card reader module
+  rc.PCD_Init();                // initialize the receiver
+  rc.PCD_DumpVersionToSerial(); // show details of card reader module
 
   pinMode(GREEN_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
@@ -58,24 +52,23 @@ void setup() {
   tone(BUZZER, 1000);
   delay(300);
   noTone(BUZZER);
-
 }
 
 void loop() {
   // readSuccess = getId();
 
-  if(!rc.PICC_IsNewCardPresent()){
+  if (!rc.PICC_IsNewCardPresent()) {
     return 0;
   }
-  if(!rc.PICC_ReadCardSerial()){
+  if (!rc.PICC_ReadCardSerial()) {
     return 0;
   }
-  
 
-  byte scannedCard[4]; 
+  byte scannedCard[4];
 
-  for(int i = 0; i < 4; i++){
-    scannedCard[i] = rc.uid.uidByte[i]; // Storing the UID of the scanned tag in scannedCard.
+  for (int i = 0; i < 4; i++) {
+    scannedCard[i] =
+        rc.uid.uidByte[i]; // Storing the UID of the scanned tag in scannedCard.
     Serial.print(rc.uid.uidByte[i], HEX);
   }
   Serial.print('\n');
@@ -97,7 +90,7 @@ void loop() {
 
   if (successCard == -1) {
     digitalWrite(RED_LED, HIGH);
-    
+
     lcd.setCursor(0, 3);
     lcd.print("Access denied!  ");
     tone(BUZZER, 500);
