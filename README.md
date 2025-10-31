@@ -30,10 +30,13 @@ The ESP32 reads an RFID card, sends their UIDs over WiFi to the backend for veri
 
 ## Code
 
-**Firmware** | C++ (Arduino framework for ESP32) | RFID reading and WiFi communication |
-**Backend** | TypeScript | For verifying RFID UIDs |
-**Frontend** | EJS | Web interface |
-**Database** | MySQL | Stores authorized card UIDs and user info |
+**Firmware** | C++ (Arduino framework for ESP32) | RFID reading and WiFi communication 
+
+**Backend** | TypeScript | For verifying RFID UIDs 
+
+**Frontend** | EJS | Web interface 
+
+**Database** | MySQL | Stores authorized card UIDs and user info 
 
 ---
 
